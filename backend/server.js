@@ -7,11 +7,12 @@ const port = process.env.PORT;
 app.get("/", (req, res) => {
     res.send("Api is running");
 });
-app.get("/api/chat", (req, res) => {
+app.get("/api/chats", (req, res) => {
     res.send(chats);
 });
-app.get("/api/chat/:id", (req, res) => {
+app.get("/api/chats/:id", (req, res) => {
     res.send(chats.find(c => c.id === req.params.id));
     
 });
-app.listen(port, console.log(`Server Online on ${port}`));
+//listens to port when server goes online
+app.listen(port, console.log(`Server Online on http://localhost:${port}`));
