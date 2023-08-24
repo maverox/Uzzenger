@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
 const {chats} =  require('./data/data')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const connDB = require('./config/db');
+const colors = require('colors');
+
 dotenv.config();
+connDB();
 const port = process.env.PORT;
 app.get("/", (req, res) => {
     res.send("Api is running");
@@ -15,4 +19,4 @@ app.get("/api/chats/:id", (req, res) => {
     
 });
 //listens to port when server goes online
-app.listen(port, console.log(`Server Online on http://localhost:${port}`));
+app.listen(port, console.log(`Server Online on http://localhost:${port}`.yellow.bold));
