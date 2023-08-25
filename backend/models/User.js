@@ -7,21 +7,21 @@ const userModel = mongoose.Schema(
             type: String, required: true
         },
         email: {
-            type: String, unique:true, required: true
+            type: String, unique: true, required: true
         },
         password: {
-            type: String, trim:true, required: true
+            type: String, trim: true, required: true
         },
         pic: {
-            type: String, required:true,
-            default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"                                            
+            type: String, required: true,
+            default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
         },
         isAdmin: {
-            type: Boolean, 
+            type: Boolean,
             required: true,
             default: false
-        }, 
-    }, 
+        },
+    },
     {
         timestamp: true
     }
