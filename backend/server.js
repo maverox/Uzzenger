@@ -4,13 +4,13 @@ const dotenv = require('dotenv');
 const connDB = require('./config/db');
 const colors = require('colors');
 const userRoutes = require('./routes/userRoutes')
-
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const app = express();
 
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 //data base connection call
 connDB();
 
@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
 
 //.use is used to setup a middleware at the specified endpoint to CRUD  to DB
 app.use('/api/user', userRoutes);
+
+// api error handlers
+app.use(notFound);
+app.use(errorHandler);
 
 //listens to port when server goes online
 app.listen(port, console.log(`Server Online on http://localhost:${port}`.yellow.bold));
