@@ -1,7 +1,6 @@
 const express = require('express');
-const { registerUser } = require('../controllers/userControllers')
+const { registerUser, authUser} = require('../controllers/userControllers')
 const router = express.Router();
-const {authUser} =  require('../controllers/userControllers')
 router.use(express.json())
 
 // api endpoint after the /api/user/

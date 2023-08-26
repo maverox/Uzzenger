@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler') // wrapper function to handle async errors thrown in a beautiful fashion
 const User = require('../models/User')
 const generateToken = require('../config/generateToken')
+const bcrypt = require('bcryptjs')
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body; // destructuring the req body that was a json object
@@ -43,10 +44,23 @@ const registerUser = asyncHandler(async (req, res) => {
 // authUser
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+    // empty user field
+    const user = User.findOne({ email }); // returns the matching user object
+    //if user exists and password matches 
+    if (user && (await user.matchPassword(password))) {
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            pic: user.pic,
+            token: generateToken(user._id),
+        })
+    } else {
 
-    const user = User.findOne({ email });
-
+        res.status(401);
+        throw new Error("Invalid Email or Password");
+    }
     
 })
 
-module.exports = { registerUser }
+module.exports = { registerUser, authUser }
