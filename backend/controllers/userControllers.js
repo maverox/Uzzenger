@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler') // wrapper function to handle async errors thrown in a beautiful fashion
-const User = require('../models/User')
+const User = require('../models/userModel')
 const generateToken = require('../config/generateToken')
 const bcrypt = require('bcryptjs')
 
@@ -59,7 +59,19 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error("Invalid Email or Password");
     }
-    
+
+})
+//api route for searching user using query 
+const allUsers = asyncHandler(async (req, res) => {
+    const keyword = req.query.search ? {
+        $or: [  // or operator
+            { name: { $regex: req.query.search, $options: 'i' } }, // i for case insensitive
+            { email: { $regex: req.query.search, $options: 'i' } }
+        ]
+    } : {}  // if no search query then empty object
+
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } }); // find all users except the logged in user
+    res.send(users);
 })
 
-module.exports = { registerUser, authUser }
+module.exports = { registerUser, authUser, allUsers }
