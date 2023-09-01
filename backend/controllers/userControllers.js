@@ -2,7 +2,8 @@ const asyncHandler = require('express-async-handler') // wrapper function to han
 const User = require('../models/userModel')
 const generateToken = require('../config/generateToken')
 const bcrypt = require('bcryptjs')
-
+//async because we are making a request to the database
+//registerUser
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body; // destructuring the req body that was a json object
 
@@ -20,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // creating user
-    const user = User.create({
+    const user =  User.create({
         name,
         email,
         password,

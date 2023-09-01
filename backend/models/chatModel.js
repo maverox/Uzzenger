@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+// mongoose is an object hence it can be destructured like this {Schema, model} = mongoose
 //Schema for chat
 const chatModel = mongoose.Schema({
     // chatName

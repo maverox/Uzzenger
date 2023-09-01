@@ -30,7 +30,7 @@ const userModel = mongoose.Schema(
 // encrypt password before saving the model to dB
 userModel.pre("save", async function (next) {
     if (!this.isModified) {
-        next();
+        next(); //next is a function that is called after the pre function is executed which in our case is encrypting the password its the equivalent of contiue in c++
     } else {
         const saltRounds = 10;// more rounds more secure but more time to encrypt slower hashing means more secure as cyber criminals will take more time to crack it
         const salt = await bcrypt.genSalt(saltRounds);
@@ -39,7 +39,7 @@ userModel.pre("save", async function (next) {
 })
 // match password
 userModel.methods.matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
+    return await bcrypt.compare(enteredPassword, this.password); // asyncly returns after comparing password string with hashed password output
 }
 
 // Model
