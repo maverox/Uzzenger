@@ -23,7 +23,7 @@ const userModel = mongoose.Schema(
         },
     },
     {
-        timestamp: true
+        timestamps: { createdAt: 'createdDate', updatedAt: 'updatedDate' }
     }
 )
 

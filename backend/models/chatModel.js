@@ -28,7 +28,7 @@ const chatModel = mongoose.Schema({
 },
 //timestamps
     {
-        timsestamps: true
+        timestamps: { createdAt: 'createdDate',updatedAt: 'updatedDate'}
     },
 )
 

@@ -40,7 +40,9 @@ const accessChat = asyncHandler(async (req, res) => {
 
 })
 
-// fetch chat controller
+// fetch chat controller 
+// it will fetch all the chats of the logged in user and populate the latest message and sender details
+// this controller is used in frontend to display all the chats of the logged in user
 const fetchChats = asyncHandler(async (req, res) => {
 
     try {
@@ -51,11 +53,11 @@ const fetchChats = asyncHandler(async (req, res) => {
             .sort({ updatedAt: -1 })
             .then(async (results) => {
                 results = await User.populate(results, {
-                    path: "latestMessage.sender", 
+                    path: "latestMessage.sender",
                     select: "name pic email",
                 });
 
-               res.status(200).send( results );
+                res.status(200).send(results);
             });
     } catch (error) {
         res.status(500).json(error.message);
@@ -64,5 +66,76 @@ const fetchChats = asyncHandler(async (req, res) => {
 });
 
 // controller for creating group chat
+const createGroupChat = asyncHandler(async (req, res) => {
+    const { name, users, user } = req.body;
+    if (!name || !users) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+    const userList = JSON.parse(users);
 
-module.exports = { accessChat, fetchChats };
+    if (userList.length < 2) {
+        return res.status(400).json({ message: 'Please add more than one user' });
+    }
+    userList.push(req.user._id);
+    try {
+        const newChat = await Chat.create({
+            chatName: name,
+            users: userList,
+            isGroupChat: true,
+            groupAdmin: user
+        });
+        const groupChat = await Chat.findOne({ _id: newChat._id }).populate('users', "-password").populate('groupAdmin', "-password");
+        res.status(200).json({ chat: groupChat });
+    } catch (error) {
+        res.status(500).json({ message: 'Can\'t create chat' });
+    }
+    //route for renaming group chat
+    
+});
+const renameGroup = asyncHandler(async (req, res) => {
+        if (!req.body.chatId || !req.body.chatName) {
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+        try {
+            Chat.findByIdAndUpdate({ _id: req.body.chatId }, { chatName: req.body.chatName }, { new: true }).then((result) => {
+                res.status(200).json({ chat: result });
+            });
+        } catch (error) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+
+    });
+
+// controller for adding user to group chat
+const addToGroup = asyncHandler(async (req, res) => {
+    const {chatId, userId} = req.body;
+    if (!chatId || !userId) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+     
+    try {
+        Chat.findByIdAndUpdate(chatId, { $push: { users: userId } }, { new: true })
+        .populate('users', "-password").populate('groupAdmin', "-password")
+        .then((result) => {
+            res.status(200).json({ chat: result });});
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
+//controller for removing user from group chat
+const removeFromGroup = asyncHandler(async (req, res) => {
+    const {chatId, userId} = req.body;
+    if (!chatId || !userId) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+    try {
+        Chat.findByIdAndUpdate(chatId, {$pull: {users: userId}}, {new: true})
+        .populate('users', "-password").populate('groupAdmin', "-password")
+        .then((result) => {
+            res.status(200).json({ chat: result});
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}) 
+module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup };
