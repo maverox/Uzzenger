@@ -53,7 +53,7 @@ const Login = () => {
 
       console.log(data);
       toast({
-        title: "Account Created Successfully!",
+        title: "Logged in Successfully!",
         status: "success",
         duration: 5000,
         isClosable: true,
