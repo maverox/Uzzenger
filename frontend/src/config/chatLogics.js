@@ -1,6 +1,9 @@
 import React from 'react'
 //it returns the user who is not the logger user
-export const getSender = (loggerUser, users) => { 
-
-    return users.find((user) => user._id !== loggerUser._id).name;
-};
+export const getSender = (loggedUser, users) => {
+    return users[0]?._id === loggedUser?._id ? users[1].name : users[0].name;
+  };
+  
+export const getSenderFull = (loggedUser, users) => {
+    return users[0]._id === loggedUser._id ? users[1] : users[0];
+  };

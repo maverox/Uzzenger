@@ -2,7 +2,6 @@ const express = require('express');
 const { protect } = require('../middleware/authMiddlerware');
 const { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup} = require('../controllers/chatControllers');
 const router = express.Router();
-
 router.route('/').post(protect, accessChat).get(protect, fetchChats); // access chat and fetch chats 
 // creating groups
 

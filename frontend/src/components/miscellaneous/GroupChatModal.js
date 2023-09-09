@@ -29,6 +29,7 @@ const GroupChatModal = ({ children }) => {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  
   const { user, chats, setChats } = ChatState();
   const toast = useToast();
 
@@ -49,7 +50,7 @@ const GroupChatModal = ({ children }) => {
     if (selectedUsers.includes(user)) {
       setSelectedUsers((prev) => prev.filter((u) => u !== user));
     }
-    
+
   };
 
   const searchUser = async (query) => {
@@ -80,7 +81,57 @@ const GroupChatModal = ({ children }) => {
     }
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    if (!groupChatName || !selectedUsers.length) {
+      return toast({
+        title: "Please Fill all the fields",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+
+    }
+
+    try {
+      if (selectedUsers.length <= 2) {
+        return toast({
+          title: "Please select more than 2 users",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+      const { data } = await axios.post('/api/chat/group', {
+          name: groupChatName,
+          users: JSON.stringify(selectedUsers.map((user) => user._id))
+        },
+        config
+      );
+      setChats([data, ...chats]);
+      onClose();
+      toast({
+        title: "Chat Created",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(data);
+    } catch (error) {
+      toast({
+        title: "An error occurred.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <>
       <span onClick={onOpen}>{children}</span>

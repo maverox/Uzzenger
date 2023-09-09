@@ -9,7 +9,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { ViewIcon } from "@chakra-ui/icons";
+import { InfoIcon, ViewIcon } from "@chakra-ui/icons";
 const ProfileModal = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure(); // hook to open and close modal
 
@@ -20,7 +20,7 @@ const ProfileModal = ({ user, children }) => {
       ) : (
         <IconButton
           onClick={onOpen}
-          icon={<ViewIcon />}
+          icon={<InfoIcon />}
           display={{ base: "flex" }}
         />
       )}

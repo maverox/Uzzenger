@@ -27,18 +27,20 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ChatLoading from "../ChatLoading";
 import { useDisclosure } from "@chakra-ui/hooks";
-import UserListItem from "../UserAvatar/UserListItem";
+import UserListItem from "../UserCards/UserListItem";
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const { user, setSelectedChat, chats, setChats} = ChatState();
+  const { user, setSelectedChat, chats, setChats, setUser} = ChatState();
   const history = useHistory();
     const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
+    setChats([])
+    setUser('')
     history.push("/");
   };
   const accessChat = async (userId) => {
