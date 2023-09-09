@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
 import axios from 'axios';
-import { Box, Button, Stack, Text, Toast, background } from '@chakra-ui/react';
+import { Box, Button, Stack, Text, Toast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
 import { getSender } from '../config/chatLogics';
+import GroupChatModal from './miscellaneous/GroupChatModal';
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState()
-  const {user, selectedChat, setSelectedChat, chats, setChats} = ChatState();
+  const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const fetchChats = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`
-                }
-            }
-            const {data} = await axios.get('/api/chat', config);
-            console.log(data)
-            setChats(data);
-        } catch (error) {
-            Toast({
-                title: "error fetching chats",
-                description: error.message,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                location: "bottom-left"
-            })
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
         }
+      }
+      const { data } = await axios.get('/api/chat', config);
+      setChats(data);
+    } catch (error) {
+      Toast({
+        title: "error fetching chats",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        location: "bottom-left"
+      })
     }
-    useEffect(() => {
-      setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
-      fetchChats();
-    }, [])
-    {console.log(selectedChat)}
+  }
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
+    fetchChats();
+  }, [])
+  
   return (
     <Box
-    mt={"1"}
+      mt={"1"}
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
@@ -61,7 +61,8 @@ const MyChats = () => {
         fontWeight={600}
       >
         My Chats
-        
+
+        <GroupChatModal>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -75,7 +76,8 @@ const MyChats = () => {
           >
             New Group Chat
           </Button>
-        
+        </GroupChatModal>
+
       </Box>
       <Box
         display="flex"
@@ -101,10 +103,10 @@ const MyChats = () => {
                 key={chat._id}
               >
                 <Text>
-                  {!chat.isGroupChat? (
+                  {!chat.isGroupChat ? (
                     getSender(loggedUser, chat.users)
                   ) :
-                  (chat.chatName)}
+                    (chat.chatName)}
                 </Text>
               </Box>
             ))}
