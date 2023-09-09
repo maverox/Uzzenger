@@ -7,23 +7,21 @@ import ChatLoading from './ChatLoading';
 import { getSender } from '../config/chatLogics';
 import GroupChatModal from './miscellaneous/GroupChatModal';
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState()
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const fetchChats = async () => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${user.token}`
         }
       }
-      const { data } = await axios.get('/api/chat', config);
+      const { data } = await axios.get('/api/chat/', config);
       setChats(data);
     } catch (error) {
       Toast({
         title: "error fetching chats",
-        description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -34,7 +32,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
     fetchChats();
-  }, [])
+  }, [fetchAgain])
   
   return (
     <Box
@@ -48,6 +46,7 @@ const MyChats = () => {
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
+      h={{ base: "100%", md: "100vh" }}
     >
       <Box
         pb={3}

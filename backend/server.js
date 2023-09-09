@@ -1,5 +1,4 @@
 const express = require('express');
-const {chats} =  require('./data/data')
 const dotenv = require('dotenv');
 const connDB = require('./config/db');
 const colors = require('colors');
