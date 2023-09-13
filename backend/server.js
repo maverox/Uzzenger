@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const app = express();
 const chatRoutes = require('./routes/chatRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ app.use('/api/user', userRoutes);
 //chat route
 app.use('/api/chat', chatRoutes)
 
+//message route 
+app.use('/api/message', messageRoutes); 
 // api error handlers
 app.use(notFound);
 app.use(errorHandler);

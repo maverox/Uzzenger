@@ -9,7 +9,7 @@ const notFound = (req, res, next) => {
 //create a errorHandler middleware for handling errors at routes    
 const errorHandler = (err, req, res, next) => {
     //check for status code
-    const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+    const statusCode = res.statusCode === 200 ? 500 : res.statusCode; 
     //send status code
     res.status(statusCode);
     //send json object
