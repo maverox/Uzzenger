@@ -50,8 +50,6 @@ const Login = () => {
         { email, password },
         config
       );
-
-      console.log(data);
       toast({
         title: "Logged in Successfully!",
         status: "success",

@@ -162,6 +162,7 @@ const SideDrawer = () => {
               mr={2}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
             />
             <Button onClick={handleSearch} colorScheme="teal" borderRadius={'3xl'}>
             <i cursor={'pointer'} className="fas fa-search"></i>

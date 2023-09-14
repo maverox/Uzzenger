@@ -1,4 +1,4 @@
-import { ViewIcon } from "@chakra-ui/icons";
+import { SettingsIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -184,6 +184,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
+      fetchMessages();
       setLoading(false);
     } catch (error) {
       console.log(error)
@@ -201,7 +202,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
+      <IconButton d={{ base: "flex" }} icon={<SettingsIcon />} onClick={onOpen} />
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
