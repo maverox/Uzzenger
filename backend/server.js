@@ -7,6 +7,7 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const app = express();
 const chatRoutes = require('./routes/chatRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const path = require('path');
 
 dotenv.config();
 
@@ -18,9 +19,7 @@ connDB();
 app.use(express.json());
 
 
-app.get("/", (req, res) => {
-    res.send(`<h1 style="font-family: Verdana;">Api is running</h1>`); // used to send html to page or endpoint
-});
+
 
 //.use is used to setup a middleware at the specified endpoint to CRUD  to DB
 app.use('/api/user', userRoutes);
@@ -30,6 +29,22 @@ app.use('/api/chat', chatRoutes)
 
 //message route 
 app.use('/api/message', messageRoutes);
+
+//---------------------------------------------------Deployment--------------------------------------------------------
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname1, '/frontend/build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname1, 'frontend', 'build', 'index.html'));
+    }); // used to send html to page or endpoint
+} else {
+    app.get("/", (req, res) => {
+    res.send(`<h1 style="font-family: Verdana;">Api is running</h1>`); // used to send html to page or endpoint
+});
+}
+//---------------------------------------------------Deployment--------------------------------------------------------
 // api error handlers
 app.use(notFound);
 app.use(errorHandler);
