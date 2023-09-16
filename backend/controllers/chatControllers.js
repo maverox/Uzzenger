@@ -90,7 +90,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
       .status(400)
       .send("More than 2 users are required to form a group chat");
   }
-
+  console.log(req.user)
   users.push(req.user);
 
   try {
@@ -126,7 +126,9 @@ const renameGroup = asyncHandler(async (req, res) => {
     {
       new: true,
     }
-  ).populate("users", "-password").populate("groupAdmin", "-password");
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
 
   if (!updatedChat) {
     res.status(404);

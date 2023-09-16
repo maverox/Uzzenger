@@ -93,7 +93,7 @@ const GroupChatModal = ({ children }) => {
     }
 
     try {
-      if (selectedUsers.length <= 2) {
+      if (selectedUsers.length < 2) {
         return toast({
           title: "Please select more than 2 users",
           status: "error",
