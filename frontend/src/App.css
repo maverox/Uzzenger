@@ -19,16 +19,3 @@
   background: #555;
 }
 
-.message {
-  display: flex;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  flex-direction: column;
-  
-  font-family: 'Work Sans', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: #24365D;
-  text-align: center;
-  margin-top: 10%;
-}

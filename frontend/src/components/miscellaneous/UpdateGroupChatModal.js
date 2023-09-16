@@ -1,4 +1,4 @@
-import { SettingsIcon, ViewIcon } from "@chakra-ui/icons";
+import { SettingsIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,

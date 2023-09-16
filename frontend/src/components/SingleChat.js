@@ -6,7 +6,7 @@ import ProfileModal from './miscellaneous/ProfileModal';
 import { getSender, getSenderFull } from "../config/chatLogics";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
-import '/frontend/src/App.css' 
+import './style.css'
 import ScrollableChat from "./ScrollableChat";
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
@@ -14,9 +14,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState()
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  useEffect(() => {
-    fetchMessages();
-  }, [selectedChat])
+  
   
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -42,7 +40,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
     setLoading(false);
   }
-
+useEffect(() => {
+    fetchMessages();
+  }, [selectedChat])
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing indicator logic here
