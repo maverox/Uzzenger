@@ -1,0 +1,85 @@
+JWT 
+json web token, used to authorize data transfer and also to transfer the data itself 
+json object HEADER.BODY.SIGNATURE separated by dots
+https://www.geeksforgeeks.org/json-web-token-jwt/
+
+even though it's backend and abstracted/hidden from the user, still it is built similarly like routing connecting all the jazz
+
+What is Middleware? It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
+
+When talking about express.json() and express.urlencoded() think specifically about POST requests (i.e. the .post request object) and PUT Requests (i.e. the .put request object)
+
+You DO NOT NEED express.json() and express.urlencoded() for GET Requests or DELETE Requests.
+
+You NEED express.json() and express.urlencoded() for POST and PUT requests, because in both these requests you are sending data (in the form of some data object) to the server and you are asking the server to accept or store that data (object), which is enclosed in the body (i.e. req.body) of that (POST or PUT) Request
+
+Express provides you with middleware to deal with the (incoming) data (object) in the body of the request.
+
+a. express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object. This method is called as a middleware in your application using the code: app.use(express.json());
+
+b. express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays. This method is called as a middleware in your application using the code: app.use(express.urlencoded());
+
+ALTERNATIVELY, I recommend using body-parser (it is an NPM package) to do the same thing. It is developed by the same peeps who built express and is designed to work with express. body-parser used to be part of express. Think of body-parser specifically for POST Requests (i.e. the .post request object) and/or PUT Requests (i.e. the .put request object).
+
+In body-parser you can do
+
+// calling body-parser to handle the Request Object from POST requests
+var bodyParser = require('body-parser');
+// parse application/json, basically parse incoming Request Object as a JSON Object 
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded, basically can only parse incoming Request Object if strings or arrays
+app.use(bodyParser.urlencoded({ extended: false }));
+// combines the 2 above, then you can parse incoming Request Object if object, with nested objects, or generally any type.
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+https://heynode.com/blog/2020-04/salt-and-hash-passwords-bcrypt/
+hashing and salting
+hashing: convert a password string to a random hash from a hash algo
+salting: is generating  a random    string and adding it to the password before hashing it
+bcrypt: is a hashing algo that uses salting
+bcrypt.hashSync(password, saltRounds)
+bcrypt.compareSync(password, hash) // returns true or false
+
+A salt is a random string. By hashing a plain text password plus a salt, the hash algorithm’s output is no longer predictable. The same password will no longer yield the same hash. The salt gets automatically included with the hash, so you do not need to store it in a database.
+
+
+mongoose is a package that allows you to interact with a mongoDB database
+https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/
+schema is a blueprint for the data you want to store in the database
+model is a class with which we construct documents
+document is an instance of a model
+collection is a group of documents
+
+why mongoose?
+mongoose provides semi-rigidity to a very superflous database that is mongoDBModels are responsible for all document interactions like creating, reading, updating, and deleting (CRUD).
+
+for eg uptil now User from models/user.js is a model and we were using to CRUD login signup data
+
+note: the first argument passed to the model should be the singular form of your collection name. Mongoose automatically changes this to the plural form, transforms it to lowercase, and uses that for the database collection name.
+snippet: const User = mongoose.model('User', userSchema);
+in cluster it will be collectison : "users"
+
+populate is to replace the path with the actual data in the referenced collections
+
+thats why uptil now we were using userSchema which doesnt have nested collections or references to other collections
+but messages and Chat has that that's why .populate method is used
+
+https://medium.com/@brockmrohloff_12324/auth-why-http-post-7c4da662cfa2#:~:text=In%20summary%2C%20the%20HTTP%20method%20most%20often%20used,which%20best%20fits%20the%20intended%20use%20of%20POST.
+why post for login and signup and not other http req?
+In summary, the HTTP method most often used to create a resource is POST. The POST method is used to send data to a server to create/update a resource. In contrast, the HTTP PUT method is used to update an existing resource. PUT is most-often utilized for update capabilities, PUT-ing to a known resource URI with the request body containing the newly-updated representation of the original resource.
+Sending information in the request body is more secure than sending it as a URL/Query Parameter, but the reason for this isn’t particularly intuitive. Both are encrypted by SSL/TLS, so it seems logical that they are equally secure. But the URL could be stored in plain text by your browser (history, for example), which is a vulnerability, and it could be sent unencrypted during DNS resolution, which happens before SSL/TLS encryption, another vulnerability.
+
+idempotence
+Simply, a request method is idempotent if the effect following multiple requests is the same as a single request. For example, a PUT request is intended to be idempotent because updating any existing content should always result with the same change, regardless of how many times that request is made. In contrast, a POST request is not idempotent because it results in a different change each time it is made.
+Because authentication requests often include the creation of a record, like a session, they are often non-idempotent. Logging in could also refresh the time that a user should remain logged in for, or have other side effects if they are already logged in, which have different effects and are, therefore, non-idempotent. So POST, intended for non-idempotent requests, best fits most authentication implementations.
+
+context api is a way to pass data through the component tree without having to pass props down manually at every level
+https://www.youtube.com/watch?v=35lXWvCuM8o
+it is a way of managing state in react
+
+
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
+https://www.youtube.com/watch?v=2Nt-ZrNP22A
+The WebSocket API is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
+A WebSocket connection is established by upgrading from the HTTP protocol to the WebSockets protocol during the initial handshake between the client and the server, over the same underlying TCP/IP connection. No separate connection is established, and the initial HTTP connection is thus not closed. The WebSocket protocol enables interaction between a web browser (or other client application) and a web server with lower overheads, facilitating real-time data transfer from and to the server. This is made possible by providing a standardized way for the server to send content to the browser without being solicited by the client, and allowing for messages to be passed back and forth while keeping the connection open. In this way, a two-way ongoing conversation can take place between the client and the server. The communications are done over TCP port number 80 (or 443 in the case of TLS-encrypted connections), which is of benefit for those environments which block non-web Internet connections using a firewall. Similar two-way browser-server communications have been achieved in non-standardized ways using stopgap technologies such as Comet.
