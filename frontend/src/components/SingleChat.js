@@ -10,7 +10,7 @@ import './style.css'
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
 import Lottie  from "react-lottie";
-const ENDPOINT = 'http://localhost:8080';
+const ENDPOINT = 'https://uzzenger.onrender.com';
 
 var socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
