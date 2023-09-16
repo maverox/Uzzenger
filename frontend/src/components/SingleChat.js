@@ -114,6 +114,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
+  console.log(notification);
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
